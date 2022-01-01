@@ -39,7 +39,7 @@ def predict_model_comparation():
     file.save(os.path.join('static', 'temp.jpg'))
     img = cv2.cvtColor(np.array(Image.open(file)), cv2.COLOR_BGR2RGB)
 
-    model = load_model('Pratikum Modul 2/AlexnetModel94-ori.h5')
+    model = load_model('Model/AlexnetModel94-ori.h5')
     imgi = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(imgi)[0]
@@ -50,7 +50,7 @@ def predict_model_comparation():
     idx_pred = respon_model.index(max(respon_model))
     labels = list(class_list.keys())
 
-    modelh = load_model('Pratikum Modul 2/DenseNet201Model96-ori.h5')
+    modelh = load_model('Model/DenseNet201Model96-ori.h5')
     imgh = np.expand_dims(cv2.resize(img, modelh.layers[0].input_shape[0][1:3] if not modelh.layers[0].input_shape[1:3] else modelh.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     starth = time.time()
     predh = modelh.predict(imgh)[0]
@@ -60,6 +60,29 @@ def predict_model_comparation():
     respon_modelh = [round(elem * 100, 2) for elem in predh]
     idx_predh = respon_modelh.index(max(respon_modelh))
     labelsh = list(class_list.keys())
+
+    model1 = load_model('Model/ModelCNN1-ori.h5')
+    img1 = np.expand_dims(cv2.resize(img, model1.layers[0].input_shape[0][1:3] if not model1.layers[0].input_shape[1:3] else model1.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
+    start1 = time.time()
+    pred1 = model1.predict(img1)[0]
+    labels1 = (pred1 > 0.5).astype(np.int)
+    print(labels1)
+    runtimes1 = round(time.time()-start1,4)
+    respon_model1 = [round(elem * 100, 2) for elem in pred1]
+    idx_pred1 = respon_model1.index(max(respon_model1))
+    labels1 = list(class_list.keys())
+
+
+    model2 = load_model('Model/ModelCNN2-ori.h5')
+    img2 = np.expand_dims(cv2.resize(img, model2.layers[0].input_shape[0][1:3] if not model2.layers[0].input_shape[1:3] else model2.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
+    start2 = time.time()
+    pred2 = model2.predict(img2)[0]
+    labels2 = (pred2 > 0.5).astype(np.int)
+    print(labels2)
+    runtimes2 = round(time.time()-start2,4)
+    respon_model2 = [round(elem * 100, 2) for elem in pred2]
+    idx_pred2 = respon_model2.index(max(respon_model2))
+    labels2 = list(class_list.keys())
     return render_template('/result_model_comparation.html', 
                             img='temp.jpg',
                             labels=labels, 
@@ -72,6 +95,16 @@ def predict_model_comparation():
                             modelh='DenseNet201', 
                             predh=idx_predh, 
                             run_timeh=runtimesh,
+                            labels1=labels1, 
+                            probs1=respon_model1, 
+                            model1='ModelCNN1', 
+                            pred1=idx_pred1, 
+                            run_time1=runtimes1,
+                            labels2=labels2, 
+                            probs2=respon_model2, 
+                            model2='ModelCNN2', 
+                            pred2=idx_pred2, 
+                            run_time2=runtimes2,
                             )
     # return predict_result(chosen_model, runtimes, respon_model, 'temp.jpg')
 
@@ -84,8 +117,10 @@ def predict_select_image():
     chosen_model = request.form['select_model']
     file_image = request.form['file']
     model_dict = {
-        'Alexnet'         :   'Pratikum Modul 2/AlexnetModel94-ori.h5',
-        'DenseNet201'        :   'Pratikum Modul 2/DenseNet201Model96-ori.h5',
+        'Alexnet'           :   'Model/AlexnetModel94-ori.h5',
+        'DenseNet201'       :   'Model/DenseNet201Model96-ori.h5',
+        'ModelCNN1'         :   'Model/ModelCNN1-ori.h5',
+        'ModelCNN2'         :   'Model/ModelCNN2-ori.h5',
         }
     if chosen_model in model_dict:
         model = load_model(model_dict[chosen_model]) 
@@ -112,8 +147,10 @@ def about():
 def predict():
     chosen_model = request.form['select_model']
     model_dict = {
-        'Alexnet'         :   'Pratikum Modul 2/AlexnetModel94-ori.h5',
-        'DenseNet201'        :   'Pratikum Modul 2/DenseNet201Model96-ori.h5',
+        'Alexnet'           :   'Model/AlexnetModel94-ori.h5',
+        'DenseNet201'       :   'Model/DenseNet201Model96-ori.h5',
+        'ModelCNN1'         :   'Model/ModelCNN1-ori.h5',
+        'ModelCNN2'         :   'Model/ModelCNN2-ori.h5',
         }
     if chosen_model in model_dict:
         model = load_model(model_dict[chosen_model]) 

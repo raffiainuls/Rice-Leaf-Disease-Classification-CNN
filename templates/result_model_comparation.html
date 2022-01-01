@@ -52,6 +52,20 @@
                                 <td>{{ (probsh|max) }}%</td>
                                 <td>{{ (run_timeh) }} s</td>
                             </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>{{ model1 }}</td>
+                                <td>{{ labels1[pred1] }}</td>
+                                <td>{{ (probs1|max) }}%</td>
+                                <td>{{ (run_time1) }} s</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>{{ model2 }}</td>
+                                <td>{{ labels2[pred2] }}</td>
+                                <td>{{ (probs2|max) }}%</td>
+                                <td>{{ (run_time2) }} s</td>
+                            </tr>
                         </tbody>
                     </table>
                     <p style="text-align: center; color: black;">
@@ -63,12 +77,12 @@
                         new Chart(document.getElementById("bar-chart"), {
                             type: 'bar',
                             data: {
-                                labels: ["Alexnet", "DenseNet201"],
+                                labels: ["Alexnet", "DenseNet201", "ModelCNN1", "ModelCNN2"],
                                 datasets: [
                                     {
                                         label: "Accuracy",
-                                        backgroundColor: ["orange", "blue"],
-                                        data: [{{ (probs|max) }}, {{ (probsh|max) }}]
+                                        backgroundColor: ["orange", "blue","red","yelllow"],
+                                        data: [{{ (probs|max) }}, {{ (probsh|max) }}, {{ (probs1|max) }}, {{ (probs2|max) }}]
                                     }
                                 ]
                             },
