@@ -1,0 +1,103 @@
+{% extends 'base2.html' %}
+{% block content %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<!-- Table-section -->
+<section class="contact-section" id="result" style="padding-bottom: 50px;">
+    <div class="container">
+        <div class="title-box centred" style="padding-top: 5px; padding-bottom: 5px;">
+            <div class="sec-title">Detection Result</div>
+        </div>
+        <div class="row justify-content-md-center" style="color: black;">
+            <div class="col-lg-8 col-md-12 col-sm-12 content-column">
+                <div class="sidebar-content justify-content-md-center">
+                    <img src="{{ url_for('static', filename=img) }}" alt="" class="img-thumbnail mx-auto d-block"
+                        style="height:300px; width:300px;">
+                    <!-- <p style="font-size:25px;text-align:center;">Input Image</p> -->
+                </div>
+                <div class="sidebar-content " style="text-align: center; color: black;">
+                    <div class="contact-form-area mb-2">
+                        <p
+                            style="margin: unset; padding: none; color: black; text-transform: capitalize; font-size: 25px; font-weight: bold;">
+                            Comparation Model Result
+                        </p>
+
+                    </div>
+                    <p style="text-align: center; color: black;">
+                        Tabel Komparasi Model
+                    </p>
+                    <table class="table table-bordered" style="color: black;">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Model Name</th>
+                                <th scope="col">Label</th>
+                                <th scope="col">Accuracy</th>
+                                <th scope="col">Prediction Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>{{ model }}</td>
+                                <td>{{ labels[pred] }}</td>
+                                <td>{{ (probs|max) }}%</td>
+                                <td>{{ (run_time) }} s</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>{{ modelh }}</td>
+                                <td>{{ labelsh[predh] }}</td>
+                                <td>{{ (probsh|max) }}%</td>
+                                <td>{{ (run_timeh) }} s</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="text-align: center; color: black;">
+                        Grafik tingkat akurasi model
+                    </p>
+                    <canvas id="bar-chart" class="mb-1 mt-3" width="600" height="300"></canvas>
+                    <script>
+                        // Bar chart
+                        new Chart(document.getElementById("bar-chart"), {
+                            type: 'bar',
+                            data: {
+                                labels: ["Alexnet", "DenseNet201"],
+                                datasets: [
+                                    {
+                                        label: "Accuracy",
+                                        backgroundColor: ["orange", "blue"],
+                                        data: [{{ (probs|max) }}, {{ (probsh|max) }}]
+                                    }
+                                ]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    // text: 'Predicted world population (millions) in 2050'
+                                }
+                            }
+                        });
+                    </script>
+
+                    <div class="container-login100-form-btn mt-5">
+                        <a class="btn btn-success" href="javascript:history.back()">Back</a>
+                        <!-- <a class="btn btn-dark" href="javascript:history.back()">Back</a>\ -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+</script>
+
+<!-- final-section end -->
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<!-- form-section -->
+<section class="contact-section" style="padding-top:50px;" id="predict1">
+    <div class="container">
+        <div class="row justify-content-md-center">
+
+            <div class="title-box centred col-12">
+                <div class="sec-title">Upload an Image to Detect</div>
+            </div>
+            <div class="col-6">
+                <form class="login100-form validate-form" action="/predict_model_comparation" method=post enctype=multipart/form-data>
+                    <img id="image-preview" alt="image preview" src="#" style="width: 50%;" />
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-input100 validate-input" data-validate="Image file is required" id="input">
+                            <input class="input100" id="image-source" name="file" onchange="previewImage();" type="file"
+                                alt="Input Image" accept="image/jpeg,image/jpg,image/png">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class="fa fa-file" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <button class="btn btn-success" type="submit">
+                        <!-- <button class="btn btn-dark" type="submit"> -->
+                            Execute
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- form-section end -->
+
+{% endblock %}

@@ -1,0 +1,2 @@
+Alexnet		: https://drive.google.com/file/d/1-9-0naOMlmKbw9fvNyNEvyliwm7JUioZ/view?usp=sharing
+DenseNet	: https://drive.google.com/file/d/1-HE236lR1UoN9Ycv0_rYWoAmbEEB8hqw/view?usp=sharing
