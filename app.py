@@ -6,6 +6,7 @@ from PIL import Image
 from flask import Flask, request, redirect, render_template
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import model_from_json
+from keras.optimizers import SGD
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app = Flask(__name__)
