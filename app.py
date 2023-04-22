@@ -6,7 +6,6 @@ from PIL import Image
 from flask import Flask, request, redirect, render_template
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import model_from_json
-from keras.optimizers import SGD
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app = Flask(__name__)
@@ -40,7 +39,7 @@ def predict_model_comparation():
     file.save(os.path.join('static', 'temp.jpg'))
     img = cv2.cvtColor(np.array(Image.open(file)), cv2.COLOR_BGR2RGB)
 
-    model = load_model('Model/AlexnetModel94-ori.h5', custom_objects={'Custom>SGD': SGD})
+    model = load_model('Model/AlexnetModel94-ori.h5')
     imgi = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(imgi)[0]
@@ -51,7 +50,7 @@ def predict_model_comparation():
     idx_pred = respon_model.index(max(respon_model))
     labels = list(class_list.keys())
 
-    modelh = load_model('Model/DenseNet201Model96-ori.h5', custom_objects={'Custom>SGD': SGD})
+    modelh = load_model('Model/DenseNet201Model96-ori.h5')
     imgh = np.expand_dims(cv2.resize(img, modelh.layers[0].input_shape[0][1:3] if not modelh.layers[0].input_shape[1:3] else modelh.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     starth = time.time()
     predh = modelh.predict(imgh)[0]
@@ -62,7 +61,7 @@ def predict_model_comparation():
     idx_predh = respon_modelh.index(max(respon_modelh))
     labelsh = list(class_list.keys())
 
-    model1 = load_model('Model/ModelCNN1-ori.h5', custom_objects={'Custom>SGD': SGD})
+    model1 = load_model('Model/ModelCNN1-ori.h5')
     img1 = np.expand_dims(cv2.resize(img, model1.layers[0].input_shape[0][1:3] if not model1.layers[0].input_shape[1:3] else model1.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start1 = time.time()
     pred1 = model1.predict(img1)[0]
@@ -74,7 +73,7 @@ def predict_model_comparation():
     labels1 = list(class_list.keys())
 
 
-    model2 = load_model('Model/ModelCNN2-ori.h5', custom_objects={'Custom>SGD': SGD})
+    model2 = load_model('Model/ModelCNN2-ori.h5')
     img2 = np.expand_dims(cv2.resize(img, model2.layers[0].input_shape[0][1:3] if not model2.layers[0].input_shape[1:3] else model2.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start2 = time.time()
     pred2 = model2.predict(img2)[0]
