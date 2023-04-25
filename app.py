@@ -44,7 +44,7 @@ def predict_model_comparation():
     imgi = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(imgi)[0]
-    labels = (pred > 0.5).astype(np.int)
+    labels = (pred > 0.5).astype(int)
     print(labels)
     runtimes = round(time.time()-start,4)
     respon_model = [round(elem * 100, 2) for elem in pred]
@@ -55,7 +55,7 @@ def predict_model_comparation():
     imgh = np.expand_dims(cv2.resize(img, modelh.layers[0].input_shape[0][1:3] if not modelh.layers[0].input_shape[1:3] else modelh.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     starth = time.time()
     predh = modelh.predict(imgh)[0]
-    labelsh = (predh > 0.5).astype(np.int)
+    labelsh = (predh > 0.5).astype(int)
     print(labelsh)
     runtimesh = round(time.time()-starth,4)
     respon_modelh = [round(elem * 100, 2) for elem in predh]
@@ -66,7 +66,7 @@ def predict_model_comparation():
     img1 = np.expand_dims(cv2.resize(img, model1.layers[0].input_shape[0][1:3] if not model1.layers[0].input_shape[1:3] else model1.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start1 = time.time()
     pred1 = model1.predict(img1)[0]
-    labels1 = (pred1 > 0.5).astype(np.int)
+    labels1 = (pred1 > 0.5).astype(int)
     print(labels1)
     runtimes1 = round(time.time()-start1,4)
     respon_model1 = [round(elem * 100, 2) for elem in pred1]
@@ -78,7 +78,7 @@ def predict_model_comparation():
     img2 = np.expand_dims(cv2.resize(img, model2.layers[0].input_shape[0][1:3] if not model2.layers[0].input_shape[1:3] else model2.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start2 = time.time()
     pred2 = model2.predict(img2)[0]
-    labels2 = (pred2 > 0.5).astype(np.int)
+    labels2 = (pred2 > 0.5).astype(int)
     print(labels2)
     runtimes2 = round(time.time()-start2,4)
     respon_model2 = [round(elem * 100, 2) for elem in pred2]
@@ -134,7 +134,7 @@ def predict_select_image():
     img = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(img)[0]
-    labels = (pred > 0.5).astype(np.int)
+    labels = (pred > 0.5).astype(int)
     print(labels)
     runtimes = round(time.time()-start,4)
     respon_model = [round(elem * 100, 2) for elem in pred]
@@ -163,7 +163,7 @@ def predict():
     img = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(img)[0]
-    labels = (pred > 0.5).astype(np.int)
+    labels = (pred > 0.5).astype(int)
     print(labels)
     runtimes = round(time.time()-start,4)
     respon_model = [round(elem * 100, 2) for elem in pred]
