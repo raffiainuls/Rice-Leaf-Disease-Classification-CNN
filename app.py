@@ -6,15 +6,8 @@ from PIL import Image
 from flask import Flask, request, redirect, render_template
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import model_from_json
-from keras.optimizers import SGD
-from keras.models import load_model
-
-def custom_objects_fn():
-    return {'Custom>SGD': SGD}
-
-# load the model
-model = load_model('my_model.h5', custom_objects=custom_objects_fn())
-
+from tensorflow.keras.optimizers import Adam
+#deploy
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads/'
@@ -47,33 +40,33 @@ def predict_model_comparation():
     file.save(os.path.join('static', 'temp.jpg'))
     img = cv2.cvtColor(np.array(Image.open(file)), cv2.COLOR_BGR2RGB)
 
-    model = load_model('Model/AlexnetModel94-ori.h5', custom_objects=custom_objects_fn())
+    model = load_model('Model/AlexnetModel94-ori.h5', compile = False)
     imgi = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(imgi)[0]
-    labels = (pred > 0.5).astype(int)
+    labels = (pred > 0.5).astype(np.int)
     print(labels)
     runtimes = round(time.time()-start,4)
     respon_model = [round(elem * 100, 2) for elem in pred]
     idx_pred = respon_model.index(max(respon_model))
     labels = list(class_list.keys())
 
-    modelh = load_model('Model/DenseNet201Model96-ori.h5', custom_objects=custom_objects_fn())
+    modelh = load_model('Model/DenseNet201Model96-ori.h5', compile = False)
     imgh = np.expand_dims(cv2.resize(img, modelh.layers[0].input_shape[0][1:3] if not modelh.layers[0].input_shape[1:3] else modelh.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     starth = time.time()
     predh = modelh.predict(imgh)[0]
-    labelsh = (predh > 0.5).astype(int)
+    labelsh = (predh > 0.5).astype(np.int)
     print(labelsh)
     runtimesh = round(time.time()-starth,4)
     respon_modelh = [round(elem * 100, 2) for elem in predh]
     idx_predh = respon_modelh.index(max(respon_modelh))
     labelsh = list(class_list.keys())
 
-    model1 = load_model('Model/ModelCNN1-ori.h5', custom_objects=custom_objects_fn())
+    model1 = load_model('Model/ModelCNN1-ori.h5', compile = False)
     img1 = np.expand_dims(cv2.resize(img, model1.layers[0].input_shape[0][1:3] if not model1.layers[0].input_shape[1:3] else model1.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start1 = time.time()
     pred1 = model1.predict(img1)[0]
-    labels1 = (pred1 > 0.5).astype(int)
+    labels1 = (pred1 > 0.5).astype(np.int)
     print(labels1)
     runtimes1 = round(time.time()-start1,4)
     respon_model1 = [round(elem * 100, 2) for elem in pred1]
@@ -81,11 +74,11 @@ def predict_model_comparation():
     labels1 = list(class_list.keys())
 
 
-    model2 = load_model('Model/ModelCNN2-ori.h5', custom_objects=custom_objects_fn())
+    model2 = load_model('Model/ModelCNN2-ori.h5', compile = False)
     img2 = np.expand_dims(cv2.resize(img, model2.layers[0].input_shape[0][1:3] if not model2.layers[0].input_shape[1:3] else model2.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start2 = time.time()
     pred2 = model2.predict(img2)[0]
-    labels2 = (pred2 > 0.5).astype(int)
+    labels2 = (pred2 > 0.5).astype(np.int)
     print(labels2)
     runtimes2 = round(time.time()-start2,4)
     respon_model2 = [round(elem * 100, 2) for elem in pred2]
@@ -131,9 +124,9 @@ def predict_select_image():
         'ModelCNN2'         :   'Model/ModelCNN2-ori.h5',
         }
     if chosen_model in model_dict:
-        model = load_model(model_dict[chosen_model]) 
+        model = load_model(model_dict[chosen_model], compile = False) 
     else:
-        model = load_model(model_dict[0])
+        model = load_model(model_dict[0], compile = False)
     # file = request.files["file"]
     # file.save(os.path.join('static', 'temp.jpg'))
     pth_fl = 'static/main/images/sample_image/' + file_image
@@ -141,7 +134,7 @@ def predict_select_image():
     img = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(img)[0]
-    labels = (pred > 0.5).astype(int)
+    labels = (pred > 0.5).astype(np.int)
     print(labels)
     runtimes = round(time.time()-start,4)
     respon_model = [round(elem * 100, 2) for elem in pred]
@@ -161,16 +154,16 @@ def predict():
         'ModelCNN2'         :   'Model/ModelCNN2-ori.h5',
         }
     if chosen_model in model_dict:
-        model = load_model(model_dict[chosen_model]) 
+        model = load_model(model_dict[chosen_model], compile = False) 
     else:
-        model = load_model(model_dict[0])
+        model = load_model(model_dict[0], compile = False)
     file = request.files["file"]
     file.save(os.path.join('static', 'temp.jpg'))
     img = cv2.cvtColor(np.array(Image.open(file)), cv2.COLOR_BGR2RGB)
     img = np.expand_dims(cv2.resize(img, model.layers[0].input_shape[0][1:3] if not model.layers[0].input_shape[1:3] else model.layers[0].input_shape[1:3]).astype('float32') / 255, axis=0)
     start = time.time()
     pred = model.predict(img)[0]
-    labels = (pred > 0.5).astype(int)
+    labels = (pred > 0.5).astype(np.int)
     print(labels)
     runtimes = round(time.time()-start,4)
     respon_model = [round(elem * 100, 2) for elem in pred]
